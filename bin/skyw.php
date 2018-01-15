@@ -25,16 +25,16 @@ foreach ($packages as $name => $package) {
 print "\nType number in [n] to select or leave blank to abort: \n\n>>>";
 
 $handle = fopen ("php://stdin","r");
-$line1 = fgets($handle);
+$line1  = fgets($handle);
 
-switch ($n = trim($line1)) {
-	case (int)$n < count($packages):
+switch ($n = trim($line1)){
+	case ($n < count($packages)):
 		echo "\nYou've selected the following package:\n\n ";
 		echo "   $names[$n]: ".($clone = $clones[$n])."\n\n";
 		break;
 
-	case (int)$n >= count($packages):
-		exit("That package [$n] doesn't exist!").PHP_EOL;
+	case ($n <= count($packages)):
+		exit("That package '[$n]' doesn't exist!\n");
 		break;
 	
 	default:
@@ -47,8 +47,8 @@ print "   Type './' for this directory or '../' for parent of this directory\n";
 print "   Or, type directory name to create one in this directory\n\n>>>";
 
 $line2 = fgets($handle);
-$dir = dirname($line2);
+$dir   = $line2;
 fclose($handle);
 
-echo "git clone $clone $dir && cd $dir/ && composer update\n";
+shell_exec("git clone $clone $dir && cd $dir && composer update");
 echo "\n\nThank you, continuing...\n\n\r";
