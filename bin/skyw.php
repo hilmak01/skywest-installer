@@ -99,26 +99,26 @@ if($total > 0) $exists .= $notEmpty;
 if($exists != "" && strpos($exists, $notEmpty) !== false)
 	exit("$exists\nPlease you a different directory name!\n\r");
 
-if(!is_dir($dir)) mkdir($dir, 0775, true); 
-$dir = realpath($dir);
-
 print "Which branch are you going to clone into $dir?: \n";
 print "(Leave blank for the default branch, usually master, or type the name of the branch, e.g. '1.0-x')\n";
 
 print "\n\t>>> ";
-$branch = trim(fgets($handle));
+$branch = trim(fgets($handle)) ?? 'default';
 print "\n";
  
-print "Your '$branch' branch will be created in '$dir. Continue? ['Y' or 'N']: \n";
+print "Your $branch branch will be created in '$dir. Continue? ['Y' or 'N']: \n";
 
 print "\n\t>>> ";
 $confirm = trim(fgets($handle));
 print "\n";
 
 if(strtoupper($confirm) != 'Y') exit("Aborting...\n\r");
-if(!empty($branch)) $branch = "-b $branch ";
+if($branch != 'default') $branch = "-b $branch ";
 
 fclose($handle);
+
+// if(!is_dir($dir)) mkdir($dir, 0775, true); 
+// $dir = realpath($dir);
 
 shell_exec("git clone $branch$repo $dir && cd $dir && composer update");
 echo "\n\nThank you, finishing...\n\n\r";
