@@ -24,7 +24,9 @@ $packages = [
 
 /***************************************************************************/
 $handle = fopen ("php://stdin","r");
-print "\nAre you going to be using 'https' or 'ssh' for this?\n(Leave blank or enter 0 for https, or enter 1 for ssh): \n\n>>> ";
+print "\nAre you going to be using 'https' or 'ssh' for this?";
+print "\n(Leave blank or enter 0 for https, or enter 1 for ssh):";
+print "\n\n\t>>> ";
 $protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
 
 $names = array();
@@ -39,7 +41,8 @@ foreach ($packages as $name => $package) {
 }
 
 print "\nWhat package would you like to clone?\n\n";
-print "\nType number in [n] to select or leave blank to abort: \n\n>>> ";
+print "\nType number in [n] to select or leave blank to abort:";
+print "\n\n\t>>> ";
 $n  = (int)trim(fgets($handle));
 $count = count($packages);
 
@@ -58,9 +61,10 @@ switch ($n){
 	    exit;
 		break;
 }
-print "Where would you like to clone this repository to?: \n";
-print "\tType './' for this directory or '../' for parent of this directory\n";
-print "\tOr, type directory name to create one in this directory\n\n>>> ";
+print "Where would you like to clone this repository to (relative to this folder)?: \n";
+print "\tType './' for this directory or '../' for parent of this directory to startn\n";
+print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'";
+print "\n\n\t>>> ";
 
 $dir   = trim(fgets($handle));
 fclose($handle);
