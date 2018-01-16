@@ -90,4 +90,4 @@ if(!empty($branch)) $branch = "-b $branch ";
 fclose($handle);
 
 shell_exec("git clone $branch$repo $dir && cd $dir && composer update");
-echo "\n\nThank you, continuing...\n\n\r";
+echo "\n\nThank you, finishing...\n\n\r";
