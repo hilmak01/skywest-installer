@@ -27,7 +27,7 @@ print "\nType number in [n] to select or leave blank to abort: \n\n>>>";
 $handle = fopen ("php://stdin","r");
 $line1  = fgets($handle);
 
-switch ($n = trim($line1)){
+switch ($n = (int)trim($line1)){
 	case ($n < count($packages)):
 		echo "\nYou've selected the following package:\n\n ";
 		echo "   $names[$n]: ".($clone = $clones[$n])."\n\n";
