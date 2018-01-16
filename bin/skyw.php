@@ -32,7 +32,7 @@ $protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
 $names = array();
 $clones = array();
 
-$index = 0;
+$index = 1;
 foreach ($packages as $name => $package) {
 	$names[$index]  = $name;
 	$clones[$index] = $clone = $package[$protocol];
@@ -47,12 +47,15 @@ $n  = (int)trim(fgets($handle));
 $count = count($packages);
 
 switch ($n){
-	case ($n < $count):
+	case $n:
+		exit("You've selected to stop this operation. Exiting...");
+		break;
+	case ($n <= $count):
 		echo "\nYou've selected the following package:\n\n ";
 		echo "   $names[$n]: ".($clone = $clones[$n])."\n\n";
 		break;
 
-	case ($n >= $count):
+	case ($n > $count):
 		exit("That package '[$n]' doesn't exist!\n");
 		break;
 	
