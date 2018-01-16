@@ -27,5 +27,6 @@
     },
     "bin": [ 
         "bin/skyw" 
-    ]
+    ],
+    "minimum-stability": "dev
 }
