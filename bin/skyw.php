@@ -2,6 +2,17 @@
 
 namespace SKYW;
 
+print "\n=============================================================================\n";
+print "\n\t";
+print "\t\tSKYWEST INSTALLER, v1.0";
+print "\n\t";
+print "\n=============================================================================\n";
+print "\nChecking for updated version of this installer?\n";
+shell_exec("composer install");
+
+print "\nUpdate check completed!...\n";
+print "--------------------------------------------------------------------------------\n\n";
+
 $packages = [
 	"www.skywest.com"  => [
 		'https' => "https://github.com/skywestairlines/www.skywest.com.git",
@@ -24,15 +35,18 @@ $packages = [
 
 /***************************************************************************/
 $handle = fopen ("php://stdin","r");
-print "\nAre you going to be using 'https' or 'ssh' for this?";
-print "\n(Leave blank or enter 0 for https, or enter 1 for ssh):";
-print "\n\n\t>>> ";
+print "Are you going to be using 'https' or 'ssh' for this?\n";
+print "(Leave blank or enter 0 for https, or enter 1 for ssh):\n";
 
+print "\n\t>>> ";
 $protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
+print "\n";
+
 $names = array();
 $clones = array();
 
 $index = 1;
+print "The following repositories (installed by this tool) were found in the system!\n";
 foreach ($packages as $name => $package) {
 	$names[$index]  = $name;
 	$clones[$index] = $repo = $package[$protocol];
@@ -76,15 +90,32 @@ print "\n\t>>> ";
 $dir = trim(fgets($handle));
 print "\n";
 
-if(file_exists($dir)) exit("This directory already exists! Please use a different name");
+$total = count(glob("$dir/*"));
 
-print "\nWhat branch are you going to clone?: \n";
+$exists = ""; 
+$notEmpty = " and, it is not empty!";
+if(file_exists($dir) || is_dir($dir)) $exists .= "This directory already exists!";
+if($total > 0) $exists .= $notEmpty;
+if($exists != "" && strpos($exists, $notEmpty) !== false)
+	exit("$exists\nPlease you a different directory name!\n\r");
+
+if(!is_dir($dir)) mkdir($dir, 0775, true); 
+$dir = realpath($dir);
+
+print "Which branch are you going to clone into $dir?: \n";
 print "(Leave blank for the default branch, usually master, or type the name of the branch, e.g. '1.0-x')\n";
 
 print "\n\t>>> ";
 $branch = trim(fgets($handle));
 print "\n";
+ 
+print "Your '$branch' branch will be created in '$dir. Continue? ['Y' or 'N']: \n";
 
+print "\n\t>>> ";
+$confirm = trim(fgets($handle));
+print "\n";
+
+if(strtoupper($confirm) != 'Y') exit("Aborting...\n\r");
 if(!empty($branch)) $branch = "-b $branch ";
 
 fclose($handle);
