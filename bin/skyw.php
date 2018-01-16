@@ -42,44 +42,52 @@ foreach ($packages as $name => $package) {
 
 print "\n\nWhat package would you like to clone?\n";
 print "(Type number in [n] to select; type 0 or leave blank to abort):\n";
+
 print "\n\t>>> ";
 $n  = (int)trim(fgets($handle));
+print "\n";
+
 $count = count($packages);
 
 switch ($n){
 	case 0:
-		exit("\nYou've selected to stop this operation. Exiting...\n\r");
+		exit("You've selected to stop this operation. Exiting...\n\r");
 		break;
 
 	case ($n <= $count):
-		echo "\nYou've selected the following package:\n\n";
+		echo "You've selected the following package:\n\n";
 		echo "   $names[$n]: ".($repo = $clones[$n])."\n\n";
 		break;
 
 	case ($n > $count):
-		exit("\nThat package '[$n]' doesn't exist!\n");
+		exit("That package '[$n]' doesn't exist!\n");
 		break;
 	
 	default:
-		echo "\nOkay, nothing will be installed. ABORTING...!\n";
+		echo "Okay, nothing will be installed. ABORTING...!\n";
 	    exit;
 		break;
 }
 print "Where would you like to clone this repository to (relative to this folder)?: \n";
 print "\tType './' for this directory or '../' for parent of this directory to startn\n";
 print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'\n";
-print "\n\t>>> ";
 
-$dir   = trim(fgets($handle));
-if(!is_dir($dir)) mkdir($dir, 0775, true);
+print "\n\t>>> ";
+$dir = trim(fgets($handle));
+print "\n";
+
+if(file_exists($dir)) exit("This directory already exists! Please use a different name");
 
 print "\nWhat branch are you going to clone?: \n";
-print "\tLeave blank for the default branch (usually master) or type the name of the branch (e.g. '1.0-x')\n";
+print "(Leave blank for the default branch, usually master, or type the name of the branch, e.g. '1.0-x')\n";
+
 print "\n\t>>> ";
 $branch = trim(fgets($handle));
+print "\n";
 
 if(!empty($branch)) $branch = "-b $branch ";
 
 fclose($handle);
-shell_exec("git clone $branch$clone $dir && cd $dir && composer update");
+
+shell_exec("git clone $branch$repo $dir && cd $dir && composer update");
 echo "\n\nThank you, continuing...\n\n\r";
