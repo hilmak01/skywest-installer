@@ -2,14 +2,30 @@
 
 namespace SKYW;
 
-print "\nWhat package would you like to clone?\n\n";
-
 $packages = [
-	"www.skywest.com"  => "https://github.com/skywestairlines/www.skywest.com.git",
-	"inc.skywest.com"  => "https://github.com/skywestairlines/inc.skywest.com.git",
-	"blog.skywest.com" => "https://github.com/skywestairlines/blog.skywest.com.git",
-	"www.miniindy.org" => "https://github.com/skywestairlines/www.miniindy.org.git"
+	"www.skywest.com"  => [
+		'https' => "https://github.com/skywestairlines/www.skywest.com.git",
+		'ssh'  => "git@github.com:skywestairlines/www.skywest.com.git"
+	],
+	"inc.skywest.com"  => [
+		'https' => "https://github.com/skywestairlines/inc.skywest.com.git",
+		'ssh'  => "git@github.com:skywestairlines/inc.skywest.com.git"
+	],
+	"blog.skywest.com" => [
+		'https' => "https://github.com/skywestairlines/blog.skywest.com.git",
+		'ssh'  => "git@github.com:skywestairlines/blog.skywest.com.git"
+	],
+	"www.miniindy.org" => [
+		'https' => "https://github.com/skywestairlines/www.miniindy.org.git",
+		'ssh'  => "git@github.com:skywestairlines/www.miniindy.org.git"
+	]
 ];
+
+
+/***************************************************************************/
+$handle = fopen ("php://stdin","r");
+print "\nAre you going to be using 'https' or 'ssh' for this?\n(Leave blank or enter 0 for https, or enter 1 for ssh): \n\n>>> ";
+$protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
 
 $names = array();
 $clones = array();
@@ -17,38 +33,38 @@ $clones = array();
 $index = 0;
 foreach ($packages as $name => $package) {
 	$names[$index]  = $name;
-	$clones[$index] = $package;
-	echo "     [$index]  ".$name.PHP_EOL;
+	$clones[$index] = $clone = $package[$protocol];
+	echo "\t[$index]  $name - $clone\n";
 	$index++;	
 }
 
-print "\nType number in [n] to select or leave blank to abort: \n\n>>>";
+print "\nWhat package would you like to clone?\n\n";
+print "\nType number in [n] to select or leave blank to abort: \n\n>>> ";
+$n  = (int)trim(fgets($handle));
+$count = count($packages);
 
-$handle = fopen ("php://stdin","r");
-$line1  = fgets($handle);
-
-switch ($n = (int)trim($line1)){
-	case ($n < count($packages)):
+switch ($n){
+	case ($n < $count):
 		echo "\nYou've selected the following package:\n\n ";
 		echo "   $names[$n]: ".($clone = $clones[$n])."\n\n";
 		break;
 
-	case ($n <= count($packages)):
+	case ($n >= $count):
 		exit("That package '[$n]' doesn't exist!\n");
 		break;
 	
 	default:
-		echo $n. "Okay, nothing will be installed. ABORTING...!\n";
+		echo "Okay, nothing will be installed. ABORTING...!\n";
 	    exit;
 		break;
 }
 print "Where would you like to clone this repository to?: \n";
-print "   Type './' for this directory or '../' for parent of this directory\n";
-print "   Or, type directory name to create one in this directory\n\n>>>";
+print "\tType './' for this directory or '../' for parent of this directory\n";
+print "\tOr, type directory name to create one in this directory\n\n>>> ";
 
-$line2 = fgets($handle);
-$dir   = $line2;
+$dir   = trim(fgets($handle));
 fclose($handle);
+if(!is_dir($dir)) mkdir($dir, 0775, true);
 
 shell_exec("git clone $clone $dir && cd $dir && composer update");
 echo "\n\nThank you, continuing...\n\n\r";
