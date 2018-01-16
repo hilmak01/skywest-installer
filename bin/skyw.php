@@ -27,51 +27,59 @@ $handle = fopen ("php://stdin","r");
 print "\nAre you going to be using 'https' or 'ssh' for this?";
 print "\n(Leave blank or enter 0 for https, or enter 1 for ssh):";
 print "\n\n\t>>> ";
-$protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
 
+$protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
 $names = array();
 $clones = array();
 
 $index = 1;
 foreach ($packages as $name => $package) {
 	$names[$index]  = $name;
-	$clones[$index] = $clone = $package[$protocol];
-	echo "\t[$index]  $name - $clone\n";
+	$clones[$index] = $repo = $package[$protocol];
+	echo "\n\t[$index]  $name - $repo";
 	$index++;	
 }
 
-print "\nWhat package would you like to clone?\n\n";
-print "\nType number in [n] to select or leave blank to abort:";
-print "\n\n\t>>> ";
+print "\n\nWhat package would you like to clone?\n";
+print "(Type number in [n] to select; type 0 or leave blank to abort):\n";
+print "\n\t>>> ";
 $n  = (int)trim(fgets($handle));
 $count = count($packages);
 
 switch ($n){
-	case $n:
-		exit("You've selected to stop this operation. Exiting...");
+	case 0:
+		exit("\nYou've selected to stop this operation. Exiting...\n\r");
 		break;
+
 	case ($n <= $count):
-		echo "\nYou've selected the following package:\n\n ";
-		echo "   $names[$n]: ".($clone = $clones[$n])."\n\n";
+		echo "\nYou've selected the following package:\n\n";
+		echo "   $names[$n]: ".($repo = $clones[$n])."\n\n";
 		break;
 
 	case ($n > $count):
-		exit("That package '[$n]' doesn't exist!\n");
+		exit("\nThat package '[$n]' doesn't exist!\n");
 		break;
 	
 	default:
-		echo "Okay, nothing will be installed. ABORTING...!\n";
+		echo "\nOkay, nothing will be installed. ABORTING...!\n";
 	    exit;
 		break;
 }
 print "Where would you like to clone this repository to (relative to this folder)?: \n";
 print "\tType './' for this directory or '../' for parent of this directory to startn\n";
-print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'";
-print "\n\n\t>>> ";
+print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'\n";
+print "\n\t>>> ";
 
 $dir   = trim(fgets($handle));
-fclose($handle);
 if(!is_dir($dir)) mkdir($dir, 0775, true);
 
-shell_exec("git clone $clone $dir && cd $dir && composer update");
+print "\nWhat branch are you going to clone?: \n";
+print "\tLeave blank for the default branch (usually master) or type the name of the branch (e.g. '1.0-x')\n";
+print "\n\t>>> ";
+$branch = trim(fgets($handle));
+
+if(!empty($branch)) $branch = "-b $branch ";
+
+fclose($handle);
+shell_exec("git clone $branch$clone $dir && cd $dir && composer update");
 echo "\n\nThank you, continuing...\n\n\r";
