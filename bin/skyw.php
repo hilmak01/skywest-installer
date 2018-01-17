@@ -8,15 +8,20 @@ print "\t\tSKYWEST INSTALLER, v1.0";
 print "\n\t";
 print "\n=============================================================================\n";
 
-if(isset($argv[1]) && ($argv[1] == '--update' || $argv[1] == '-u')){
+if(isset($argv[1]) && ($argv[1] == '--help' || $argv[1] == '-h')){
+  print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
+	exit();
+}
+if(!isset($argv[1]) || ($argv[1] != '--skip' && $argv[1] != '-s')){
 
-	print "\nChecking for updated version of this installer?\n\n";
+	print "\nChecking for updated version of this installer?\n";
 	print "--------------------------------------------------------------------------------\n";
 	shell_exec("composer install --prefer-source");
 	print "\nUpdate check completed!...\n";
 	print "--------------------------------------------------------------------------------\n";
 
 }
+
 print "\n";
 
 $packages = [
@@ -51,6 +56,7 @@ print "\n";
 $repo = null;
 $names = array();
 $clones = array();
+$mkdir = false;
 
 $index = 1;
 print "The following repositories (installed by this tool) were found in the system!\n";
@@ -117,31 +123,48 @@ else{
 	if($total > 0)
 		$exists .= $notEmpty;
 
-	if($exists != "" && strpos($exists, $notEmpty) !== false)
+	if($exists != "" && strpos($exists, $notEmpty) !== false){
+		rmdir($dir);
 		exit("$exists\nPlease you a different directory name!\n\Aborting...\r");
+	}
 }
-
-print "Your repository will be cloned in:\n\n \t$dir\n\n";
+if(!is_dir($dir)) mkdir($dir, 0755, true);
+$mkdir = true;
+print "Your repository will be cloned in:\n\n";
+print "\t".realpath($dir)."\n\n";
 
 print "Which branch are you going to clone into $dir?: \n";
 print "\tType the name of the branch, (e.g. '3.6.4, or 1.0-x')\n";
 print "\tOr, leave blank for the default branch, (usually master)\n";
 
 print "\n\tBranch: >>> ";
-$branch = trim(fgets($handle));
+$branch = ($B = trim(fgets($handle))) != ''? $B: 'default';
 print "\n";
 
-$branch .= empty($branch)? 'default branch': ' branch';
-print "Your $branch will be created in '$dir. Continue? ['Y' or 'N']: \n";
+print "Your $branch branch will be created in '$dir'\nContinue? ['Y' or 'N']: \n";
 
 print "\n\tConfirm: >>> ";;
 $confirm = trim(fgets($handle));
 print "\n";
 
-if(strtoupper($confirm) != 'Y') exit("Aborting...\n\r");
-if($branch != 'default') $branch = "-b $branch ";
+if(strtoupper($confirm) != 'Y'){
+	if($mkdir && realpath($dir.'/.git')){
+		rmdir(realpath($dir.'/.git'));
+	}
+	if($mkdir && realpath($dir)){
+		rmdir(realpath($dir));
+	}
+	exit("Aborting...\n\r");
+}
+$b = ($branch != 'default')? "-b $branch ": '';
 
 fclose($handle);
 
-shell_exec("git clone $branch$repo $dir && cd $dir && composer update");
-echo "\n\nThank you, finishing...\n\n\r";
+try {
+	shell_exec("git clone $b$repo $dir && cd $dir && composer update");
+	echo "\n\nThank you, Finishing...\nSuccess!\n\n\r";
+}
+catch (\Exception $e) {
+	echo $e->getMessage();
+	exit();
+}
