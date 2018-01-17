@@ -1,7 +1,11 @@
 <?php
 
 namespace SKYW;
+
 $default = false;
+$dir = null;
+
+$handle = fopen ("php://stdin","r");
 
 print "\n==================================================================================\n";
 print "\n\t";
@@ -9,7 +13,21 @@ print "\t\tSKYWEST INSTALLER, v1.0";
 print "\n\t";
 print "\n==================================================================================\n";
 
+if(isset($argv[1]) && !(strpos($argv[1], '-') !== false)){
 
+  $parts = preg_match("/([.\/]*)(\S+)/msi", trim($argv[1]), $matches);
+  $parent = realpath($matches[1]) ?? './'; var_dump($parent);
+  if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
+
+  print "Are you sure you want to clone a new repository in the following folder?:\n\n";
+  $dir = $parent.DIRECTORY_SEPARATOR.trim($matches[2],'/\\');
+  print "\t".$dir."\n\n";
+  print "Please take a closer look above and confirm your entry ['Y' or 'N']:\n\n\tConfirm >>> ";
+
+  if(strtoupper(trim(fgets($handle))) != 'Y')  exit("\nProcess cancelled, please try again!\n\n\r");
+
+  print "\n";
+}
 if(isset($argv[1]) && (in_array('--help', $argv) ||  in_array('-h', $argv))){
 	print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
 	exit();
@@ -49,7 +67,7 @@ $packages = [
 
 
 /***************************************************************************/
-$handle = fopen ("php://stdin","r");
+
 print "Are you going to be using 'https' or 'ssh' for this?\n";
 print "(Leave blank or enter 0 for https, or enter 1 for ssh):\n";
 
@@ -102,34 +120,41 @@ switch ($n){
 if(empty($repo)){
 	exit("Sorry, you didn't select any repository! Aborting!...");
 }
-print "Where would you like to clone this repository to (relative to this folder)?: \n";
-print "\tType './' for this directory or '../' for parent of this directory to startn\n";
-print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'\n";
-print "\tOr leave it blank to use the default name of the repository for installation'\n";
-
-print "\n\tLocation: >>> ";
-$dir = $default? "": trim(fgets($handle));
-print "\n\n";
-
 if(empty($dir)){
-	$parts = explode("/", $repo);
-	$dir   = array_pop($parts);
-	$dir   = './'.str_replace(".git", "", $dir);
-}
-else{
-	$total = count(glob("$dir/*"));
-	$exists = "";
-	$notEmpty = " and, it is not empty!";
+	print "Where would you like to clone this repository to (relative to this folder)?: \n";
+	print "\tType './' for this directory or '../' for parent of this directory to startn\n";
+	print "\tThen type directory name you want to create. e.g. '../jumanji', or './jumanji'\n";
+	print "\tOr leave it blank to use the default name of the repository for installation'\n";
 
-	if(file_exists($dir) || is_dir($dir))
-		$exists .= "This directory already exists!";
+	print "\n\tLocation: >>> ";
+	$dir = $default? "": trim(fgets($handle));
+	print "\n\n";
 
-	if($total > 0)
-		$exists .= $notEmpty;
+	if(empty($dir)){
+		$parts = explode("/", $repo);
+		$dir   = array_pop($parts);
+		$dir   = './'.str_replace(".git", "", $dir);
+	}
+	else{
+		$parts = preg_match("/([.\/]*)(\S+)/msi", trim($argv[1]), $matches);
+		$parent = realpath($matches[1]) ?? './'; var_dump($parent);
+		if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
+		$dir = $parent.DIRECTORY_SEPARATOR.trim($matches[2],'/\\');
 
-	if($exists != "" && strpos($exists, $notEmpty) !== false){
-		rmdir($dir);
-		exit("$exists\nPlease you a different directory name!\n\Aborting...\r");
+		$total = count(glob("$dir/*"));
+		$exists = "";
+		$notEmpty = " and, it is not empty!";
+
+		if(file_exists($dir) || is_dir($dir))
+			$exists .= "This directory already exists!";
+
+		if($total > 0)
+			$exists .= $notEmpty;
+
+		if($exists != "" && strpos($exists, $notEmpty) !== false){
+			rmdir($dir);
+			exit("$exists\nPlease you a different directory name!\n\Aborting...\r");
+		}
 	}
 }
 if(!is_dir($dir)) mkdir($dir, 0755, true);
