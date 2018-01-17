@@ -1,45 +1,50 @@
 <?php
 
 namespace SKYW;
+$default = false;
 
-print "\n=============================================================================\n";
+print "\n==================================================================================\n";
 print "\n\t";
 print "\t\tSKYWEST INSTALLER, v1.0";
 print "\n\t";
-print "\n=============================================================================\n";
+print "\n==================================================================================\n";
 
-if(isset($argv[1]) && ($argv[1] == '--help' || $argv[1] == '-h')){
-  print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
+// var_dump($argv);
+
+if(isset($argv[1]) && (in_array('--help', $argv) ||  in_array('-h', $argv))){
+	print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
 	exit();
 }
-if(!isset($argv[1]) || ($argv[1] != '--skip' && $argv[1] != '-s')){
+if(!isset($argv[1]) || (!in_array('--skip', $argv) && !in_array('-s', $argv))){
 
-	print "\nChecking for updated version of this installer?\n";
+	print "\nChecking for updated version of this installer...\n";
 	print "--------------------------------------------------------------------------------\n";
 	shell_exec("composer global update skywest/installer --prefer-source");
-	print "\nUpdate check completed!...\n";
 	print "--------------------------------------------------------------------------------\n";
+	print "Update check for skywest installer completed!\n\n";
 
 }
-
+if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
+	$default = true;
+}
 print "\n";
 
 $packages = [
 	"www.skywest.com"  => [
 		'https' => "https://github.com/skywestairlines/www.skywest.com.git",
-		'ssh'  => "git@github.com:skywestairlines/www.skywest.com.git"
+		'ssh'   => "git@github.com:skywestairlines/www.skywest.com.git"
 	],
 	"inc.skywest.com"  => [
 		'https' => "https://github.com/skywestairlines/inc.skywest.com.git",
-		'ssh'  => "git@github.com:skywestairlines/inc.skywest.com.git"
+		'ssh'   => "git@github.com:skywestairlines/inc.skywest.com.git"
 	],
 	"blog.skywest.com" => [
 		'https' => "https://github.com/skywestairlines/blog.skywest.com.git",
-		'ssh'  => "git@github.com:skywestairlines/blog.skywest.com.git"
+		'ssh'   => "git@github.com:skywestairlines/blog.skywest.com.git"
 	],
 	"www.miniindy.org" => [
 		'https' => "https://github.com/skywestairlines/www.miniindy.org.git",
-		'ssh'  => "git@github.com:skywestairlines/www.miniindy.org.git"
+		'ssh'   => "git@github.com:skywestairlines/www.miniindy.org.git"
 	]
 ];
 
@@ -50,7 +55,7 @@ print "Are you going to be using 'https' or 'ssh' for this?\n";
 print "(Leave blank or enter 0 for https, or enter 1 for ssh):\n";
 
 print "\n\tProtocol: >>> ";
-$protocol  = (int)trim(fgets($handle)) == 0? 'https': 'ssh';
+$protocol  = $default? "https": ((int)trim(fgets($handle)) == 0? 'https': 'ssh');
 print "\n";
 
 $repo = null;
@@ -78,22 +83,22 @@ $count = count($packages);
 
 switch ($n){
 	case 0:
-		exit("You've selected to abort this operation. Aborting!...\n\r");
-		break;
+	exit("Wrong input, or you've selected to cancel this operation. Aborting!...\n\r");
+	break;
 
 	case ($n <= $count):
-		echo "You've selected the following package:\n\n";
-		echo "\tURL: $names[$n]\n\tGIT: ".($repo = $clones[$n])."\n\n";
-		break;
+	echo "You've selected the following package:\n\n";
+	echo "\tURL: $names[$n]\n\tGIT: ".($repo = $clones[$n])."\n\n";
+	break;
 
 	case ($n > $count):
-		exit("That package '[$n]' doesn't exist! Aborting!...\n");
-		break;
+	exit("That package '[$n]' doesn't exist! Aborting!...\n");
+	break;
 
 	default:
-		echo "Okay, nothing will be installed. Aborting!...\n";
-	    exit;
-		break;
+	echo "Okay, nothing will be installed. Aborting!...\n";
+	exit;
+	break;
 }
 if(empty($repo)){
 	exit("Sorry, you didn't select any repository! Aborting!...");
@@ -104,8 +109,8 @@ print "\tThen type directory name you want to create. e.g. '../jumanji', or './j
 print "\tOr leave it blank to use the default name of the repository for installation'\n";
 
 print "\n\tLocation: >>> ";
-$dir = trim(fgets($handle));
-print "\n";
+$dir = $default? "": trim(fgets($handle));
+print "\n\n";
 
 if(empty($dir)){
 	$parts = explode("/", $repo);
@@ -138,13 +143,13 @@ print "\tType the name of the branch, (e.g. '3.6.4, or 1.0-x')\n";
 print "\tOr, leave blank for the default branch, (usually master)\n";
 
 print "\n\tBranch: >>> ";
-$branch = ($B = trim(fgets($handle))) != ''? $B: 'default';
+$branch = $default? 'default': trim(fgets($handle));
 print "\n";
 
 print "Your $branch branch will be created in '$dir'\nContinue? ['Y' or 'N']: \n";
 
-print "\n\tConfirm: >>> ";;
-$confirm = trim(fgets($handle));
+print "\n\tConfirm: >>> ";
+$confirm = $default? "Y": trim(fgets($handle));
 print "\n";
 
 if(strtoupper($confirm) != 'Y'){
@@ -161,6 +166,7 @@ $b = ($branch != 'default')? "-b $branch ": '';
 fclose($handle);
 
 try {
+	echo "\n\tgit clone $b$repo $dir && cd $dir && composer update\n";
 	shell_exec("git clone $b$repo $dir && cd $dir && composer update");
 	echo "\n\nThank you, Finishing...\nSuccess!\n\n\r";
 }
