@@ -16,7 +16,7 @@ if(!isset($argv[1]) || ($argv[1] != '--skip' && $argv[1] != '-s')){
 
 	print "\nChecking for updated version of this installer?\n";
 	print "--------------------------------------------------------------------------------\n";
-	shell_exec("composer install --prefer-source");
+	shell_exec("composer global update skywest/installer --prefer-source");
 	print "\nUpdate check completed!...\n";
 	print "--------------------------------------------------------------------------------\n";
 
