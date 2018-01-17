@@ -2,4 +2,4 @@
 
 namespace SKYW;
 
-require_once realpath(__DIR__.'/../src/Install.php');
+require_once realpath(__DIR__.'/../src/Installer.php');
