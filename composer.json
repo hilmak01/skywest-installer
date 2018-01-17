@@ -18,8 +18,17 @@
         }
     },
     "scripts": {
-        "pre-update-cmd": [
-            "bin/skyw || true"
+        "post-create-project-cmd": [
+            "composer update",
+            "alias skyw='bin/skyw'",
+            "skyw || true"
+        ],
+        "post-install-cmd": [
+            "@pre-update-cmd"
+        ],
+        "post-update-cmd": [
+            "alias skyw='bin/skyw' || doskey skyw='bin/skyw'",
+            "skyw || true"
         ]
     },
      "config": {
