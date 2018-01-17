@@ -32,5 +32,5 @@ Other flags you can use are:
 * Hilkiah Makemo                HilkiahMakemo@github.com
 
 ## License
-Copyright (c) <year>, <copyright holder>
+Copyright (c) 2018, <copyright holder>
 Property of SkyWest Airlines.
