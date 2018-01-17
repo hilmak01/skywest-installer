@@ -1,8 +1,11 @@
 <?php
 
-if(!class_exists(SKYW\Installer)){ 
+if(!class_exists(SKYW\Installer::class)){ 
   
   require_once realpath(__DIR__.'/../src/Installer.php');
   
 }
-new SKYW\Installer();
+
+$Installer = new SKYW\Installer();
+
+return $Installer->run();
