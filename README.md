@@ -23,7 +23,8 @@ Or, in short,
 
         skyw -s
 
-There will be more options and flags in the future, which you can use as follows
+Other flags you can use are:
 
-       skyw <args|options|etc.>
+       -h, or --help            show this page, or a help section for this 'skw' command
+       -d. pr --default         run 'skyw' command faster, using all the defaults at each prompt
 
