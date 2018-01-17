@@ -16,7 +16,7 @@ Just type the following command to start the cloning process:
        
        skw
        
-If you wish to specify a directory to speed things up, replace <dir> below with the name of the directory you wish to clone your new repository into.
+If you wish to specify a directory to speed things up just replace *\<dir\>* below with the name of the directory you wish to clone your new repository into.
         
         skyw <dir>
 
