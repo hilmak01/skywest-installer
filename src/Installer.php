@@ -16,7 +16,7 @@ print "\n=======================================================================
 if(isset($argv[1]) && !(strpos($argv[1], '-') !== false)){
 
   $parts = preg_match("/([.\/]*)(\S+)/msi", trim($argv[1]), $matches);
-  $parent = realpath($matches[1]) ?? './'; var_dump($parent);
+  $parent = realpath($matches[1]) ?? './';
   if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
 
   print "Are you sure you want to clone a new repository in the following folder?:\n\n";
@@ -136,8 +136,8 @@ if(empty($dir)){
 		$dir   = './'.str_replace(".git", "", $dir);
 	}
 	else{
-		$parts = preg_match("/([.\/]*)(\S+)/msi", trim($argv[1]), $matches);
-		$parent = realpath($matches[1]) ?? './'; var_dump($parent);
+		$parts = preg_match("/([.\/]*)(\S+)/msi", trim($dir), $matches);
+		$parent = realpath($matches[1]) ?? './'; 
 		if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
 		$dir = $parent.DIRECTORY_SEPARATOR.trim($matches[2],'/\\');
 
@@ -167,10 +167,13 @@ print "\tType the name of the branch, (e.g. '3.6.4, or 1.0-x')\n";
 print "\tOr, leave blank for the default branch, (usually master)\n";
 
 print "\n\tBranch: >>> ";
-$branch = $default? 'default': trim(fgets($handle));
+if($default) 
+	$branch = 'default';
+else
+	$branch = trim(fgets($handle)) ?: 'default';
 print "\n";
 
-print "Your $branch branch will be created in '$dir'\nContinue? ['Y' or 'N']: \n";
+print "The '$branch' branch will be cloned into '$dir' direcotry\nIs it okay to continue? [please enter 'Y' or 'N' to confirm]: \n";
 
 print "\n\tConfirm: >>> ";
 $confirm = $default? "Y": trim(fgets($handle));
@@ -185,7 +188,7 @@ if(strtoupper($confirm) != 'Y'){
 	}
 	exit("Aborting...\n\r");
 }
-$b = ($branch != 'default')? "-b $branch ": '';
+$b = (strpos($branch,'default') !== false)? "-b $branch ": '';
 
 fclose($handle);
 
