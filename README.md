@@ -28,3 +28,9 @@ Other flags you can use are:
        -h, or --help            show this page, or a help section for this 'skw' command
        -d. pr --default         run 'skyw' command faster, using all the defaults at each prompt
 
+## Authors
+* Hilkiah Makemo                HilkiahMakemo@github.com
+
+## License
+Copyright (c) <year>, <copyright holder>
+Property of SkyWest Airlines.
