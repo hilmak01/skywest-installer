@@ -9,7 +9,6 @@ print "\t\tSKYWEST INSTALLER, v1.0";
 print "\n\t";
 print "\n==================================================================================\n";
 
-// var_dump($argv);
 
 if(isset($argv[1]) && (in_array('--help', $argv) ||  in_array('-h', $argv))){
 	print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
