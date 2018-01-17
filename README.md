@@ -15,13 +15,17 @@ This will install the "skw" command on the composer global space. When prompted 
 Just type the following command to start the cloning process:
        
        skw
+       
+If you wish to specify a directory to speed things up, replace <dir> below with the name of the directory you wish to clone your new repository into.
+        
+        skyw <dir>
 
 By default, this command will first check if there is a newer version of this install and automatically install it. To skip this processs, you can issue a skip flag to the command to skip updating
 
-        skyw --skip
+        skyw <dir> --skip
 Or, in short,
 
-        skyw -s
+        skyw <dir> -s
 
 Other flags you can use are:
 
