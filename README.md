@@ -16,7 +16,14 @@ Just type the following command to start the cloning process:
        
        skw
 
-Current options for this command are '--update' or '-u' which lets composer check if there is a newer version of this installer available.
-To use this option do
+By default, this command will first check if there is a newer version of this install and automatically install it. To skip this processs, you can issue a skip flag to the command to skip updating
 
-       skyw --update
+        skyw --skip
+Or, in short,
+
+        skyw -s
+
+There will be more options and flags in the future, which you can use as follows
+
+       skyw <args|options|etc.>
+
