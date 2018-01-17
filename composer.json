@@ -21,7 +21,8 @@
         "post-create-project-cmd": [
             "composer update",
             "alias skyw='bin/skyw'",
-            "skyw || true"
+            "skyw || true",
+            "./bin/skyw"
         ],
         "post-install-cmd": [
             "@pre-update-cmd"
