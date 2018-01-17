@@ -25,8 +25,8 @@ Or, in short,
 
 Other flags you can use are:
 
-       -h, or --help            show this page, or a help section for this 'skw' command
-       -d. pr --default         run 'skyw' command faster, using all the defaults at each prompt
+       --help, or -h            show this page, or a help section for this 'skw' command
+       --default or -d          run 'skyw' command faster, using all the defaults at each prompt
 
 ## Authors
 * Hilkiah Makemo                HilkiahMakemo@github.com
