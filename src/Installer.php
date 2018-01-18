@@ -203,12 +203,14 @@ class Installer
 		fclose($handle);
 
 		try {
-			echo "\n\tgit clone $b$repo $dir && cd $dir && composer update\n";
+			print "Perfect!, now seat back and wait for your clone!\n";
+			print "--------------------------------------------------------------------------------\n";
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
-			echo "\n\nThank you, Finishing...\nSuccess!\n\n\r";
+			print "--------------------------------------------------------------------------------\n";
+			print "\n\Cloning and installation of $repo is complete! Tchao!\n\n\r";
 		}
 		catch (\Exception $e) {
-			echo $e->getMessage();
+			print $e->getMessage();
 			exit();
 		}
 		
