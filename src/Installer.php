@@ -90,6 +90,9 @@ class Installer
 
 		print "\n\tProtocol: >>> ";
 		$protocol  = $default? "https": ((int)trim(fgets($handle)) == 0? 'https': 'ssh');
+		if($protocol == 1){
+			shell_exec("eval $(ssh-agent -s) && ssh-add ~/.ssh/id_rsa");
+		}
 		print "\n";
 
 		$repo = null;
