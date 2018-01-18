@@ -18,16 +18,16 @@
         }
     },
     "scripts": {
+        "post-update-cmd": [
+            "skyw || true",
+            "composer dumpautoload"
+        ],
         "post-create-project-cmd": [
             "composer update",
             "@post-update-cmd"
         ],
         "post-install-cmd": [
             "@post-update-cmd"
-        ],
-        "post-update-cmd": [
-            "skyw || true",
-            "composer dumpautoload"
         ]
     },
     "bin": [ 
