@@ -56,7 +56,7 @@ class Installer
 			shell_exec("composer global remove skywest/installer");
 			shell_exec("composer global require skywest/installer dev-master --prefer-source");
 			print "--------------------------------------------------------------------------------\n";
-			print "Update check for skywest installer completed!\n\n";
+			print "Installation of the latest skywest installer complete!\n\n";
 
 		}
 		if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
