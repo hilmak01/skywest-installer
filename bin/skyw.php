@@ -6,6 +6,12 @@ if(!class_exists(SKYW\Installer::class)){
   
 }
 
-$Installer = new SKYW\Installer();
+$argv = $argv ?? $GLOBALS['argv'] ?? $_SERVER['argv'];
 
-return $Installer->run();
+$Installer = new SKYW\Installer($argv);
+
+$handle = fopen ("php://stdin","r");
+
+return $Installer->run( $handle );
+
+fclose($handle);
