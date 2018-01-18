@@ -20,23 +20,15 @@
     "scripts": {
         "post-create-project-cmd": [
             "composer update",
-            "alias skyw='bin/skyw'",
-            "skyw || true",
-            "./bin/skyw"
+            "@post-update-cmd"
         ],
         "post-install-cmd": [
-            "@pre-update-cmd"
+            "@post-update-cmd"
         ],
         "post-update-cmd": [
             "alias skyw='bin/skyw' || doskey skyw='bin/skyw'",
             "skyw || true"
         ]
     },
-     "config": {
-        "bin-dir": "vendor/bin"
-    },
-    "bin": [ 
-        "bin/skyw" 
-    ],
     "minimum-stability": "dev"
 }
