@@ -214,9 +214,12 @@ class Installer
 		$b = (strpos($branch,'default') !== false)? '': "-b $branch ";		
 
 		try {
-			echo "\n\tgit clone $b$repo $dir && cd $dir && composer update\n";
+			print "Cloning process starting...";
+			print "--------------------------------------------------------------------------------\n";
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
-			echo "\n\nThank you, Finishing...\nSuccess!\n\n\r";
+			print "--------------------------------------------------------------------------------\n";
+			print "Cloning process complete!\n\n"
+			print "Thank you, Enjoy your repo!\n\n\r";
 		}
 		catch (\Exception $e) {
 			echo $e->getMessage();
