@@ -37,9 +37,8 @@ class Upgrader
   {
     $extras = [];
     foreach($Modules as $name => $module){
-      $extras['installer-paths']['vendor/$name'] = [
-      
-      ];
+      $composerJson = file_get_contents($module.'/composer.json');
+      $extras['installer-paths']['vendor/$name'][] = $composerJson['name'];
     }
   }
 }
