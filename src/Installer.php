@@ -136,8 +136,7 @@ class Installer
 		}
 		if(empty($repo)){
 			exit("Sorry, you didn't select any repository! Aborting!...");
-		}
-		var_dump($dir); exit();
+		}		
 		if(empty($dir)){
 			print "Where would you like to clone this repository to (relative to this folder)?: \n";
 			print "\tType './' for this directory or '../' for parent of this directory to startn\n";
