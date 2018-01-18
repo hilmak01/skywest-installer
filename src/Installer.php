@@ -208,7 +208,7 @@ class Installer
 			}
 			exit("Aborting...\n\r");
 		}
-		$b = (strpos($branch,'default') !== false)? "-b $branch ": '';		
+		$b = (strpos($branch,'default') !== false)? '': "-b $branch ";		
 
 		try {
 			echo "\n\tgit clone $b$repo $dir && cd $dir && composer update\n";
