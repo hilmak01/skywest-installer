@@ -4,7 +4,7 @@ This package, 'skywest-installer' is created to easy the process of creating a n
 ## Requirements
 To use this command you need to have composer installed on your machine. Instructions are here: https://getcomposer.org/download/
 
-Also, although not required, since you are dealing with git, it is best to use a git-bash for these commands, especially if you are running Windows. To download, head over to https://git-scm.com/
+Also, although not required, since you are dealing with git, it is best to use Git-Bash for these commands, especially if you are running Windows. To download, head over to https://git-scm.com/
 
 ## Installation
 At the command prompt type (or just copy and paste the line):
