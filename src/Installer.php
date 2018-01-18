@@ -4,17 +4,19 @@ namespace SKYW;
 
 class Installer
 {
-	public function __construct()
+	private $argv = null;
+
+	public function __construct($argv)
 	{
-		
+		$this->argv = $argv;
 	}
 	
-	public function run()
+	public function run($handle)
 	{
 		$default = false;
 		$dir = null;
 
-		$handle = fopen ("php://stdin","r");
+		//$handle = fopen ("php://stdin","r");
 
 		print "\n==================================================================================\n";
 		print "\n\t";
@@ -22,10 +24,16 @@ class Installer
 		print "\n\t";
 		print "\n==================================================================================\n";
 
-		if(isset($argv[1]) && !(strpos($argv[1], '-') !== false)){
+		$argv = $this->argv;
 
-			$parts = preg_match("/([.\/]*)(\S+)/msi", trim($argv[1]), $matches);
-			$parent = realpath($matches[1]) ?? './';
+		if(isset($argv[1]) && (strpos($argv[1], '-') === false)){
+
+			$args = (strpos($argv[1], './') !== false)? $argv[1]: "./".$argv[1];
+
+			$parts = preg_match("/([.\/]*)(\S+)/msi", trim($args), $matches); 
+
+			$parent = realpath($matches[1]);
+
 			if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
 
 			print "Are you sure you want to clone a new repository in the following folder?:\n\n";
@@ -36,6 +44,7 @@ class Installer
 			if(strtoupper(trim(fgets($handle))) != 'Y')  exit("\nProcess cancelled, please try again!\n\n\r");
 
 			print "\n";
+			var_dump($dir); exit();
 		}
 		if(isset($argv[1]) && (in_array('--help', $argv) ||  in_array('-h', $argv))){
 			print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
@@ -129,6 +138,7 @@ class Installer
 		if(empty($repo)){
 			exit("Sorry, you didn't select any repository! Aborting!...");
 		}
+		var_dump($dir); exit();
 		if(empty($dir)){
 			print "Where would you like to clone this repository to (relative to this folder)?: \n";
 			print "\tType './' for this directory or '../' for parent of this directory to startn\n";
@@ -166,8 +176,11 @@ class Installer
 				}
 			}
 		}
-		if(!is_dir($dir)) mkdir($dir, 0755, true);
-		$mkdir = true;
+		if(!is_dir($dir)){
+			mkdir($dir, 0755, true);
+			$mkdir = true;
+		}
+			
 		print "Your repository will be cloned in:\n\n";
 		print "\t".realpath($dir)."\n\n";
 
@@ -182,8 +195,7 @@ class Installer
 			$branch = trim(fgets($handle)) ?: 'default';
 		print "\n";
 
-		print "The '$branch' branch will be cloned into '$dir' direcotry\n";
-		print "Is it okay to continue? [You MUST confirm, so, please enter 'Y' or 'N' to confirm]: \n";
+		print "The '$branch' branch will be cloned into '$dir' direcotry\nIs it okay to continue? [please enter 'Y' or 'N' to confirm]: \n";
 
 		print "\n\tConfirm: >>> ";
 		$confirm = $default? "Y": trim(fgets($handle));
@@ -198,19 +210,15 @@ class Installer
 			}
 			exit("Aborting...\n\r");
 		}
-		$b = (strpos($branch,'default') !== false)? "": "-b $branch ";
-
-		fclose($handle);
+		$b = (strpos($branch,'default') !== false)? "-b $branch ": '';		
 
 		try {
-			print "Perfect!, now seat back and wait for your clone!\n";
-			print "--------------------------------------------------------------------------------\n";
+			echo "\n\tgit clone $b$repo $dir && cd $dir && composer update\n";
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
-			print "--------------------------------------------------------------------------------\n";
-			print "\nCloning and installation of $repo is complete! Tchao!\n\n\r";
+			echo "\n\nThank you, Finishing...\nSuccess!\n\n\r";
 		}
 		catch (\Exception $e) {
-			print $e->getMessage();
+			echo $e->getMessage();
 			exit();
 		}
 		
