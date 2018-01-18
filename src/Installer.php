@@ -51,12 +51,11 @@ class Installer
 		}
 		if(!isset($argv[1]) || (!in_array('--skip', $argv) && !in_array('-s', $argv))){
 
-			print "\nGetting the latest version of this installer...\n";
+			print "\nChecking for the latest version of this installer...\n";
 			print "--------------------------------------------------------------------------------\n";
-			shell_exec("composer global remove skywest/installer");
-			shell_exec("composer global require skywest/installer dev-master --prefer-source");
+			shell_exec("composer global update skywest/installer");
 			print "--------------------------------------------------------------------------------\n";
-			print "Installation of the latest skywest installer complete!\n\n";
+			print "Checking of the latest skywest installer complete!\n\n";
 
 		}
 		if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
