@@ -182,7 +182,8 @@ class Installer
 			$branch = trim(fgets($handle)) ?: 'default';
 		print "\n";
 
-		print "The '$branch' branch will be cloned into '$dir' direcotry\nIs it okay to continue? [please enter 'Y' or 'N' to confirm]: \n";
+		print "The '$branch' branch will be cloned into '$dir' direcotry\n";
+		print "Is it okay to continue? [You MUST confirm, so, please enter 'Y' or 'N' to confirm]: \n";
 
 		print "\n\tConfirm: >>> ";
 		$confirm = $default? "Y": trim(fgets($handle));
@@ -197,7 +198,7 @@ class Installer
 			}
 			exit("Aborting...\n\r");
 		}
-		$b = (strpos($branch,'default') !== false)? "-b $branch ": '';
+		$b = (strpos($branch,'default') !== false)? "": "-b $branch ";
 
 		fclose($handle);
 
