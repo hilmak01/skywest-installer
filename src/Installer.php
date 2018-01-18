@@ -98,7 +98,7 @@ class Installer
 		$mkdir = false;
 
 		$index = 1;
-		print "The following repositories (installable by this tool) were found in the system!\n";
+		print "The following repositories (installable by this tool) were found on https://github.com/skywestairlines!\n";
 		foreach ($packages as $name => $package) {
 			$names[$index]  = $name;
 			$clones[$index] = $pack = $package[$protocol];
