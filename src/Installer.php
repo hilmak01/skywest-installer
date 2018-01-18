@@ -56,6 +56,7 @@ class Installer
 			shell_exec("composer global update skywest/installer");
 			print "--------------------------------------------------------------------------------\n";
 			print "Checking of the latest skywest installer complete!\n\n";
+			print "********************************************************************************\n\n";
 
 		}
 		if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
