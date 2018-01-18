@@ -218,7 +218,7 @@ class Installer
 			print "--------------------------------------------------------------------------------\n";
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
 			print "--------------------------------------------------------------------------------\n";
-			print "Cloning process complete!\n\n"
+			print "Cloning process complete!\n\n";
 			print "Thank you, Enjoy your repo!\n\n\r";
 		}
 		catch (\Exception $e) {
