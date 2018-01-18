@@ -30,5 +30,8 @@
             "skyw || true"
         ]
     },
+    "bin": [ 
+-        "bin/skyw" 
+-    ],
     "minimum-stability": "dev"
 }
