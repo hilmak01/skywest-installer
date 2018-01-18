@@ -214,7 +214,7 @@ class Installer
 		$b = (strpos($branch,'default') !== false)? '': "-b $branch ";		
 
 		try {
-			print "Cloning process starting...";
+			print "Cloning process starting...\n";
 			print "--------------------------------------------------------------------------------\n";
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
 			print "--------------------------------------------------------------------------------\n";
