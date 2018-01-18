@@ -44,7 +44,6 @@ class Installer
 			if(strtoupper(trim(fgets($handle))) != 'Y')  exit("\nProcess cancelled, please try again!\n\n\r");
 
 			print "\n";
-			var_dump($dir); exit();
 		}
 		if(isset($argv[1]) && (in_array('--help', $argv) ||  in_array('-h', $argv))){
 			print "open this file to view the README content:\n\n\t".realpath(__DIR__.'/../README.md')."\n\n";
