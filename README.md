@@ -16,7 +16,7 @@ This will install the "skw" command on the composer global space. When prompted 
 ## Usage
 Just type the following command to start the cloning process:
        
-       skw
+       skyw
        
 If you wish to specify a directory to speed things up just replace *\<dir\>* below with the name of the directory you wish to clone your new repository into.
         
