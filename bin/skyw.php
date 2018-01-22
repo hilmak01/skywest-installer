@@ -6,7 +6,7 @@ if(!class_exists(SKYW\Installer::class)){
   
 }
 
-$argv = $argv ?? $GLOBALS['argv'] ?? $_SERVER['argv'];
+$argv = $argv ?: $GLOBALS['argv'] ?: $_SERVER['argv'];
 
 $Installer = new SKYW\Installer($argv);
 
