@@ -158,7 +158,7 @@ class Installer
 			}
 			else{
 				$parts = preg_match("/([.\/]*)(\S+)/msi", trim($dir), $matches);
-				$parent = realpath($matches[1]) ?? './'; 
+				$parent = realpath($matches[1]) ?: './'; 
 				if(!$parent) exit("\n\nThe path you entered is not valid. Parent directory doesn't exist!\n\r");
 				$dir = $parent.DIRECTORY_SEPARATOR.trim($matches[2],'/\\');
 
