@@ -11,7 +11,7 @@ At the command prompt type (or just copy and paste the line):
 
         composer global require skywest/installer dev-master --prefer-source
   
-This will install the "skw" command on the composer global space. When prompted follow the instructions to complete.
+This will install the "skyw" command on the composer global space. When prompted follow the instructions to complete.
 
 ## Usage
 Just type the following command to start the cloning process:
