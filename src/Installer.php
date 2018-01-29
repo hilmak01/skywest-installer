@@ -229,6 +229,9 @@ class Installer
 			shell_exec("git clone $b$repo $dir && cd $dir && composer update");
 			print "--------------------------------------------------------------------------------\n";
 			print "Cloning process complete!\n\n";
+			$site = 'localhost:'.mt_rand(7777,9999);
+			shell_exec("php -S $site");
+			print "Your new repo is now available and the site is at $site";
 			print "Thank you, Enjoy your repo!\n\n\r";
 		}
 		catch (\Exception $e) {
