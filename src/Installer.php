@@ -233,6 +233,8 @@ class Installer
 			shell_exec("php -S $site");
 			print "Your new repo is now available and the site is at $site";
 			print "Thank you, Enjoy your repo!\n\n\r";
+			shell_exec("cd $dir");
+			print "\r";
 		}
 		catch (\Exception $e) {
 			echo $e->getMessage();
