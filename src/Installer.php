@@ -80,6 +80,10 @@ class Installer
 			"www.miniindy.org" => [
 				'https' => "https://github.com/skywestairlines/www.miniindy.org.git",
 				'ssh'   => "git@github.com:skywestairlines/www.miniindy.org.git"
+			],
+			"www.expressjet.com" => [
+				'https' => "https://github.com/skywestairlines/www.expressjet.com.git",
+				'ssh'   => "git@github.com:skywestairlines/www.expressjet.com.git"
 			]
 		];
 
