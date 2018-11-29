@@ -62,30 +62,20 @@ class Installer
 		if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
 			$default = true;
 		}
-		print "\n";
+        print "\n";
 
-		$packages = [
-			"www.skywest.com"  => [
-				'https' => "https://github.com/skywestairlines/www.skywest.com.git",
-				'ssh'   => "git@github.com:skywestairlines/www.skywest.com.git"
-			],
-			"inc.skywest.com"  => [
-				'https' => "https://github.com/skywestairlines/inc.skywest.com.git",
-				'ssh'   => "git@github.com:skywestairlines/inc.skywest.com.git"
-			],
-			"blog.skywest.com" => [
-				'https' => "https://github.com/skywestairlines/blog.skywest.com.git",
-				'ssh'   => "git@github.com:skywestairlines/blog.skywest.com.git"
-			],
-			"www.miniindy.org" => [
-				'https' => "https://github.com/skywestairlines/www.miniindy.org.git",
-				'ssh'   => "git@github.com:skywestairlines/www.miniindy.org.git"
-			],
-			"www.expressjet.com" => [
-				'https' => "https://github.com/skywestairlines/www.expressjet.com.git",
-				'ssh'   => "git@github.com:skywestairlines/www.expressjet.com.git"
-			]
-		];
+        $access_token = "856709bba58438aab60ebd1120c42aa48e7e448b";
+        $repos_url = "https://api.github.com/orgs/skywestairlines/repos?access_token=$access_token";
+        ini_set("allow_url_fopen", 1);
+        $repos_data = json_decode(file_get_contents($repos_url));
+        $packages = [];
+
+        foreach($repos_data as $n => $repo){
+            $packages[$repo['name']] = [
+                'https' => $repo['git_url'],
+				'ssh'   => $repo['ssh_url']
+            ]
+        }		
 
 
 		/***************************************************************************/
