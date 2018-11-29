@@ -71,10 +71,11 @@ class Installer
         $packages = [];
 
         foreach($repos_data as $n => $repo){
-            $packages[$repo['name']] = [
+            $name = $repo['name'];
+            $packages[$name] = [
                 'https' => $repo['git_url'],
 				'ssh'   => $repo['ssh_url']
-            ]
+            ];
         }		
 
 
