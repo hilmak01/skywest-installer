@@ -55,29 +55,50 @@ class Installer
 			print "--------------------------------------------------------------------------------\n";
 			shell_exec("composer global update skywest/installer");
 			print "--------------------------------------------------------------------------------\n";
-			print "Checking of the latest skywest installer complete!\n\n";
+			print "Check for the latest skywest installer complete!\n\n";
 			print "********************************************************************************\n\n";
 
 		}
 		if(isset($argv[1]) && (in_array('--default', $argv) ||  in_array('-d', $argv))){
 			$default = true;
 		}
-        print "\n";
+		ini_set("allow_url_fopen", 1);
+		print "\n";	
+        print "Enter personal access token from github: https://github.com/settings/tokens \n";
+		print "\n\tAccess Token: >>> ";
+		$access_token = trim(fgets($handle));
+		print "\n";
 
-        $access_token = "856709bba58438aab60ebd1120c42aa48e7e448b";
-        $repos_url = "https://api.github.com/orgs/skywestairlines/repos?access_token=$access_token";
-        ini_set("allow_url_fopen", 1);
-        $repos_data = json_decode(file_get_contents($repos_url));
+        // $access_token = "856709bba58438aab60ebd1120c42aa48e7e448b";
+		$repos_url = "https://api.github.com/orgs/skywestairlines/repos?access_token=$access_token";
+
+		$headers  = [
+			"User-Agent: skywest-airlines-installer"
+		];
+
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $repos_url);
+		curl_setopt($curl, CURLOPT_POST, false);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		$repos_json = curl_exec($curl);
+		curl_close($curl);
+
+		if(!$repos_json) {
+			print "API: $repos_url\nInvalid token - no data\n";
+			exit();
+		}
+        $repos_data = json_decode($repos_json, true);
         $packages = [];
 
-        foreach($repos_data as $n => $repo){
+        foreach($repos_data as $i => $repo){
             $name = $repo['name'];
             $packages[$name] = [
                 'https' => $repo['git_url'],
-				'ssh'   => $repo['ssh_url']
-            ];
-        }		
-
+				'ssh'   => $repo['ssh_url'],
+			];
+		}
 
 		/***************************************************************************/
 
@@ -85,7 +106,9 @@ class Installer
 		print "(Leave blank or enter 0 for https, or enter 1 for ssh):\n";
 
 		print "\n\tProtocol: >>> ";
-		$protocol = trim(fgets($handle);
+		$protocol = trim(fgets($handle));
+		print "\n";
+
 		if(stripos($protocol, 'https') !== false){
 			$protocol = 0;
 		}
@@ -110,7 +133,7 @@ class Installer
 		foreach ($packages as $name => $package) {
 			$names[$index]  = $name;
 			$clones[$index] = $pack = $package[$protocol];
-			echo "\n\t[$index]  $name - $pack";
+			print "\n\t[$index]  $name - $pack";
 			$index++;
 		}
 
